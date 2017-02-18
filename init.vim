@@ -1,5 +1,4 @@
 :imap fd <Esc>
-
 let mapleader = " "
 let g:mapleader = " "
 
@@ -21,6 +20,7 @@ set lazyredraw
 set hidden
 set ttyfast
 set smarttab
+set wildmenu
 
 " speed up syntax highlighting
 set nocursorcolumn
@@ -115,7 +115,7 @@ map <leader>et :tabe %%
 inoremap <C-U> <C-G>u<C-U>
 
 " Remove search highlight
-nnoremap <leader><leader> :nohlsearch<CR>
+nnoremap ,, :nohlsearch<CR>
 
 if has('mouse')
   set mouse=a
@@ -149,6 +149,7 @@ set display+=lastline
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
+
   " Enable file type detection.
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
   " 'cindent' is on in C files, etc.
@@ -169,7 +170,7 @@ if has("autocmd")
     " position when opening a file.
     autocmd BufReadPost *
           \ if line("'\"") > 1 && line("'\"") <= line("$") |
-          \ exe "normal! g`\"" |
+          \	exe "normal! g`\"" |
           \ endif
 
   augroup END
@@ -178,7 +179,7 @@ endif " has("autocmd")
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'  }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 Plug 'neomake/neomake'
 
@@ -187,8 +188,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'Valloric/YouCompleteMe'
 
 Plug 'xolox/vim-misc'
-
-Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'majutsushi/tagbar'
 
@@ -216,15 +215,19 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'jiangmiao/auto-pairs'
 
+" FZF
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
 " Go
-Plug 'fatih/vim-go', { 'for': 'go'  }
+Plug 'fatih/vim-go'
 
 " Javascript 
-Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx']  }
-Plug 'benjie/neomake-local-eslint.vim', { 'for': ['javascript', 'javascript.jsx']  }
+Plug 'ternjs/tern_for_vim'
+Plug 'benjie/neomake-local-eslint.vim'
 
 " Rails
-Plug 'tpope/vim-rails', { 'for': 'ruby'  }
+Plug 'tpope/vim-rails'
 
 call plug#end()
 
@@ -255,9 +258,6 @@ nmap <Leader>, :ll<CR>
 nmap <Leader>n :lnext<CR>
 nmap <Leader>p :lprev<CR>
 
-" Configure CtrlP to ingore git ignored files
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-
 " Tern
 let g:tern_map_keys=1
 let g:tern_show_argument_hints='on_hold'
@@ -266,3 +266,52 @@ let g:tern_show_argument_hints='on_hold'
 let g:airline#extensions#tabline#enable=1
 let g:airline_powerline_fonts=1
 let g:airline_theme='solarized'
+
+"FZF
+nmap <C-p> :Buffers<CR>
+nmap <C-P> :GFiles<CR>
+
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+let g:fzf_files_options =
+  \ '--preview "(highlight -O ansi {} || cat {}) 2> /dev/null | head -'.&lines.'"'
+let g:fzf_buffers_jump = 1
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+let g:fzf_tags_command = 'ctags -R'
+let g:fzf_commands_expect = 'alt-enter,ctrl-x'
+
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
+
+command! -bang Colors
+  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
+
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
