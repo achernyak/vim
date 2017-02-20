@@ -215,6 +215,8 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'jiangmiao/auto-pairs'
 
+Plug 'godlygeek/tabular'
+
 " FZF
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -235,6 +237,11 @@ set background=dark
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
+
+" ultisnip
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " Neomake makers
 let g:neomake_jsx_enabled_makers = ['eslint']
@@ -269,7 +276,6 @@ let g:airline_theme='solarized'
 
 "FZF
 nmap <C-p> :Buffers<CR>
-nmap <C-P> :GFiles<CR>
 
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
