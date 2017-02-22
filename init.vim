@@ -20,7 +20,6 @@ set lazyredraw
 set hidden
 set ttyfast
 set smarttab
-set wildmenu
 
 " speed up syntax highlighting
 set nocursorcolumn
@@ -45,8 +44,8 @@ set smarttab
 
 " Softtabs, 4 spaces
 set et
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set shiftround
 set expandtab
 
@@ -115,7 +114,7 @@ map <leader>et :tabe %%
 inoremap <C-U> <C-G>u<C-U>
 
 " Remove search highlight
-nnoremap ,, :nohlsearch<CR>
+nnoremap <leader><leader> :nohlsearch<CR>
 
 if has('mouse')
   set mouse=a
@@ -189,6 +188,8 @@ Plug 'Valloric/YouCompleteMe'
 
 Plug 'xolox/vim-misc'
 
+Plug 'ctrlpvim/ctrlp.vim'
+
 Plug 'majutsushi/tagbar'
 
 Plug 'tpope/vim-surround'
@@ -197,39 +198,38 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 
 Plug 'tomtom/tlib_vim'
 
-Plug 'SirVer/ultisnips'
+Plug 'easymotion/vim-easymotion'
 
-Plug 'honza/vim-snippets'
+Plug 'jiangmiao/auto-pairs'
 
-Plug 'altercation/vim-colors-solarized'
+Plug 'jl/gundo.vim'
 
+" Visual
 Plug 'vim-airline/vim-airline'
 
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'tpope/vim-fugitive'
+Plug 'altercation/vim-colors-solarized'
 
-Plug 'easymotion/vim-easymotion'
+" Snippets
+Plug 'SirVer/ultisnips'
 
+Plug 'honza/vim-snippets'
+
+" Git
 Plug 'airblade/vim-gitgutter'
 
-Plug 'jiangmiao/auto-pairs'
-
-Plug 'godlygeek/tabular'
-
-" FZF
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-fugitive'
 
 " Go
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'for': 'go' }
 
 " Javascript 
-Plug 'ternjs/tern_for_vim'
-Plug 'benjie/neomake-local-eslint.vim'
+Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'benjie/neomake-local-eslint.vim', { 'for': ['javascript', 'javascript.jsx'] }
 
 " Rails
-Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
 call plug#end()
 
@@ -237,11 +237,6 @@ set background=dark
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
-
-" ultisnip
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " Neomake makers
 let g:neomake_jsx_enabled_makers = ['eslint']
@@ -265,6 +260,10 @@ nmap <Leader>, :ll<CR>
 nmap <Leader>n :lnext<CR>
 nmap <Leader>p :lprev<CR>
 
+" Configure CtrlP to ingore git ignored files
+let g:ctrlp_cmd = 'CtrlPBuffer'
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+
 " Tern
 let g:tern_map_keys=1
 let g:tern_show_argument_hints='on_hold'
@@ -273,43 +272,3 @@ let g:tern_show_argument_hints='on_hold'
 let g:airline#extensions#tabline#enable=1
 let g:airline_powerline_fonts=1
 let g:airline_theme='solarized'
-
-"FZF
-nmap <C-S-p> :Files<CR>
-nmap <C-p> :Buffers<CR>
-
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-let g:fzf_layout = { 'down': '~40%' }
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-let g:fzf_files_options =
-  \ '--preview "(highlight -O ansi {} || cat {}) 2> /dev/null | head -'.&lines.'"'
-let g:fzf_buffers_jump = 1
-let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-let g:fzf_tags_command = 'ctags -R'
-let g:fzf_commands_expect = 'alt-enter,ctrl-x'
-
-command! -bang Colors
-  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
-
-command! -bang -nargs=* Pt
-  \ call fzf#vim#grep(
-  \   'pt --column -S '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
