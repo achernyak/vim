@@ -202,7 +202,7 @@ Plug 'easymotion/vim-easymotion'
 
 Plug 'jiangmiao/auto-pairs'
 
-Plug 'jl/gundo.vim'
+Plug 'sjl/gundo.vim'
 
 " Visual
 Plug 'vim-airline/vim-airline'
