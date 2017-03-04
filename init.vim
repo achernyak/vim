@@ -22,6 +22,12 @@ set ttyfast
 set smarttab
 set wildmenu
 
+" folds
+set foldmethod=syntax
+set nofoldenable
+nnoremap zA za
+nnoremap za zA
+
 " speed up syntax highlighting
 set nocursorcolumn
 set nocursorline
