@@ -22,6 +22,12 @@ set ttyfast
 set smarttab
 set wildmenu
 
+" folds
+set foldmethod=syntax
+set nofoldenable
+nnoremap zA za
+nnoremap za zA
+
 " speed up syntax highlighting
 set nocursorcolumn
 set nocursorline
@@ -268,6 +274,9 @@ nmap <Leader>p :lprev<CR>
 " Tern
 let g:tern_map_keys=1
 let g:tern_show_argument_hints='on_hold'
+
+"Go
+let g:go_fmt_command = "goimports"
 
 "Airline
 let g:airline#extensions#tabline#enable=1
