@@ -45,8 +45,8 @@ set smarttab
 
 " Softtabs, 4 spaces
 set et
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set shiftround
 set expandtab
 
@@ -102,7 +102,6 @@ nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
-nnoremap gb :ls<CR>:b
 
 " Open file relative to the current file
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
@@ -197,29 +196,35 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 
 Plug 'tomtom/tlib_vim'
 
-Plug 'SirVer/ultisnips'
-
-Plug 'honza/vim-snippets'
-
-Plug 'altercation/vim-colors-solarized'
-
-Plug 'vim-airline/vim-airline'
-
-Plug 'vim-airline/vim-airline-themes'
-
-Plug 'tpope/vim-fugitive'
-
 Plug 'easymotion/vim-easymotion'
 
-Plug 'airblade/vim-gitgutter'
-
 Plug 'jiangmiao/auto-pairs'
+
+Plug 'sjl/gundo.vim'
 
 Plug 'godlygeek/tabular'
 
 " FZF
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+
 Plug 'junegunn/fzf.vim'
+
+" Visual
+Plug 'vim-airline/vim-airline'
+
+Plug 'vim-airline/vim-airline-themes'
+
+Plug 'altercation/vim-colors-solarized'
+
+" Snippets
+Plug 'SirVer/ultisnips'
+
+Plug 'honza/vim-snippets'
+
+" Git
+Plug 'airblade/vim-gitgutter'
+
+Plug 'tpope/vim-fugitive'
 
 " Go
 Plug 'fatih/vim-go'
@@ -237,11 +242,6 @@ set background=dark
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
-
-" ultisnip
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " Neomake makers
 let g:neomake_jsx_enabled_makers = ['eslint']
@@ -278,7 +278,8 @@ let g:airline_powerline_fonts=1
 let g:airline_theme='solarized'
 
 "FZF
-nmap <C-p> :Buffers<CR>
+nmap <C-p> :GFiles<CR>
+nmap gb :Buffers<CR>
 
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
@@ -306,21 +307,12 @@ let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %
 let g:fzf_tags_command = 'ctags -R'
 let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 
-command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
-
 command! -bang Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
 
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
-
-command! -bang -nargs=* Rg
+command! -bang -nargs=* Pt
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   'pt --column -S '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+  \   <bang>0)<Paste>
