@@ -312,4 +312,4 @@ command! -bang -nargs=* Pt
   \   'pt --column -S '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)<Paste>
+  \   <bang>0)
