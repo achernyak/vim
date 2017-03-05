@@ -273,6 +273,11 @@ nmap <Leader>, :ll<CR>
 nmap <Leader>n :lnext<CR>
 nmap <Leader>p :lprev<CR>
 
+" Go
+if fnamemodify(expand('%'), ':e') == "go"
+  let b:SuperTabDefaultCompletionType = "<C-x><C-o>"
+endif
+
 " Tern
 let g:tern_map_keys=1
 let g:tern_show_argument_hints='on_hold'
