@@ -190,7 +190,8 @@ Plug 'neomake/neomake'
 
 Plug 'sheerun/vim-polyglot'
 
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
+Plug 'ervandew/supertab'
 
 Plug 'xolox/vim-misc'
 
@@ -237,6 +238,7 @@ Plug 'fatih/vim-go'
 
 " Javascript 
 Plug 'ternjs/tern_for_vim'
+
 Plug 'benjie/neomake-local-eslint.vim'
 
 " Rails
@@ -253,7 +255,7 @@ colorscheme solarized
 let g:neomake_jsx_enabled_makers = ['eslint']
 
 " Neomake
-autocmd! BufEnter,BufWritePost * Neomake
+autocmd! BufWritePost * Neomake
 let g:neomake_warning_sign = {
   \ 'text': 'W',
   \ 'texthl': 'WarningMsg',
