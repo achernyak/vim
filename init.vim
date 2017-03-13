@@ -37,7 +37,6 @@ set wrap
 set linebreak
 set nolist
 set formatoptions=qrn1
-set relativenumber
 set textwidth=79
 set colorcolumn=+1
 
@@ -277,6 +276,7 @@ nmap <Leader>p :lprev<CR>
 if fnamemodify(expand('%'), ':e') == "go"
   let b:SuperTabDefaultCompletionType = "<C-x><C-o>"
 endif
+autocmd FileType go set tabstop=4|set shiftwidth=4
 
 " Tern
 let g:tern_map_keys=1
