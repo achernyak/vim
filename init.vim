@@ -185,6 +185,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
+Plug 'tpope/vim-unimpaired'
+
 Plug 'neomake/neomake'
 
 Plug 'sheerun/vim-polyglot'
@@ -245,7 +247,7 @@ Plug 'tpope/vim-rails'
 
 call plug#end()
 
-set background=dark
+set background=light
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
