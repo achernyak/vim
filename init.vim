@@ -237,6 +237,9 @@ Plug 'tpope/vim-fugitive'
 " Go
 Plug 'fatih/vim-go'
 
+" Rust
+Plug 'racer-rust/vim-racer'
+
 " Javascript 
 Plug 'ternjs/tern_for_vim'
 
@@ -279,13 +282,19 @@ if fnamemodify(expand('%'), ':e') == "go"
   let b:SuperTabDefaultCompletionType = "<C-x><C-o>"
 endif
 autocmd FileType go set tabstop=4|set shiftwidth=4
+let g:go_fmt_command = "goimports"
 
 " Tern
 let g:tern_map_keys=1
 let g:tern_show_argument_hints='on_hold'
 
-"Go
-let g:go_fmt_command = "goimports"
+" Rust
+let g:neomake_echo_current_error=3
+let g:neomake_open_list = 2
+let g:neomake_rust_enabled_makers = []
+let g:neomake_enabled_makers = ['cargo']
+let g:neomake_carg_args = ['check']
+autocmd! BufWritePost *.rs Neomake! cargo
 
 "Airline
 let g:airline#extensions#tabline#enable=1
